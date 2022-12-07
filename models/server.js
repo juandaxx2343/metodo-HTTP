@@ -1,6 +1,7 @@
 const express = require('express') // Incluir express
 const cors = require('cors') // Incluir cors
 const dbConnection = require('../database/config') // Incluir db connection
+const router = require('../routes/usuarios')
 
 class server{
     constructor() {
@@ -30,7 +31,10 @@ class server{
 
     routes() {
         //this.app.use(this.authPath, require('../routes/auth'))
-        this.app.use(this.usuariosPath, require('../routes/usuarios'))
+       // this.app.use(this.usuariosPath, require('../routes/usuarios'))
+       this.app.use(express.json())
+        this.app.use(this.usuariosPath, router )
+        
     }
 
     listen() {

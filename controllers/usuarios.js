@@ -3,10 +3,10 @@ const { response } = require('express')
 const Usuario = require('../models/usuarios')
 
 const getUsuario = async (req, res = response) => {
-    const usuario = await Usuario.find() // Buscar usuarios a través de todos los registros    
+    const usuarios = await Usuario.find() // Buscar usuarios a través de todos los registros    
     res.json({
         msg: "GET API | Usuario",
-        usuario
+        usuarios
     })
 }
 
@@ -25,13 +25,14 @@ const postUsuario = async (req, res ) => {
 }
 
 const deleteUsuario = async (req, res) => {
-    const { nombre } = req.query
+    const { correo } = req.body
 
-    const Usuario = await Usuario.findOneAndDelete({nombre:nombre})
+     await Usuario.findOneAndDelete({correo: correo})
+     const usuarios = await Usuario.find()
 
     res.json({
         msg: "DELETE API | Usuario",
-        Usuario
+        usuarios
     })
 }
 
@@ -40,29 +41,20 @@ const putUsuario = async (req, res) => {
     const { correoAnterior, correo, password, estado } = req.body
     console.log(req.body)
     
-    const Usuario = await  Usuario.findOneAndUpdate({correo: correoAnterior}, {correo: correo, password: password, estado: estado}) 
-
+    await  Usuario.findOneAndUpdate({correo: correoAnterior}, {correo: correo, password: password, estado: estado}) 
+    const usuario = await Usuario.find({correo: correo })
     res.json({  
         msg: "PUT API | Usuario",
-        Usuario
+        usuario
+        
     })
 
 }
 
-const patchUsuario = async (req,res) =>{
-    const{nombre, Precio} = req.body
-    const patch = await anch.findOneAndUpdate({nombre : nombre},{Precio : Precio})
-
-    res.json({
-        msg:'PATCH API Anchetas',
-        patch
-    })
-}
 
 module.exports = {
     getUsuario,
     postUsuario,
     putUsuario,
-    patchUsuario,
     deleteUsuario
 }
